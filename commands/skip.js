@@ -10,6 +10,6 @@ module.exports = new Command({
         if (!queue || !queue.playing) return;
         const success = queue.skip();
         if(success)
-            slash ? message.reply({embeds: [{ description: `⏭️ Track skipped.`, color: 0x44b868 }]}) : message.react("⏭️");
+            slash ? message.reply({embeds: [{ description: `⏭️ I'm happy you skipped this aweful song.`, color: 0x44b868 }]}) : message.react("⏭️");
 	}
 });
