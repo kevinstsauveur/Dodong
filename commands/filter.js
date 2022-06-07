@@ -14,9 +14,9 @@ module.exports = new Command({
   async run (message, args, client, slash) {
 
     if(!message.member.voice.channelId)
-        return message.reply({ embeds: [{ description: `You are not in a voice channel!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
+        return message.reply({ embeds: [{ description: `You are not in a voice channel, you dumb!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
     if(message.guild.me.voice.channelId && message.member.voice.channelId !== message.guild.me.voice.channelId)
-        return message.reply({ embeds: [{ description: `You are not in my voice channel!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
+        return message.reply({ embeds: [{ description: `You are not in my voice channel, you dumb!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
     const queue = client.player.getQueue(message.guild);
     const embed = new MessageEmbed();
     if(!queue || !queue.playing)
