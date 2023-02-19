@@ -9,6 +9,6 @@ module.exports = new Command({
         const queue = client.player.getQueue(message.guild);
         if (queue) await queue.destroy(true);
 		message.guild.members.me.voice.disconnect();
-        slash ? message.reply({embeds: [{ description: `👋 Disconnected.`, color: 0x44b868 }]}) : message.react('👋');
+        slash ? message.reply({embeds: [{ description: ` Go fuck yourself ❤️.`, color: 0x44b868 }]}) : message.react('👋');
 	}
 });

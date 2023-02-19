@@ -10,9 +10,9 @@ module.exports = new Command({
     ],
 	async run(message, args, client, slash) {
         if(!message.member.voice.channelId)
-            return message.reply({ embeds: [{ description: `You are not in a voice channel!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
+            return message.reply({ embeds: [{ description: `You are not in a voice channel, you dumb!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
         if(message.guild.members.me.voice.channelId && message.member.voice.channelId !== message.guild.members.me.voice.channelId)
-            return message.reply({ embeds: [{ description: `You are not in my voice channel!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
+            return message.reply({ embeds: [{ description: `You are not in my voice channel, you dumb!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
         if(!args[0]) return;
         
         if(!message.guild.members.me.permissionsIn(message.member.voice.channel).has(client.requiredVoicePermissions)) return;
@@ -50,13 +50,13 @@ module.exports = new Command({
         
         if(searchResult.playlist) {
             reply = { embeds: [{
-                description: `Queued **${searchResult.tracks.length}** tracks from [${searchResult.tracks[0].playlist.title}](${searchResult.tracks[0].playlist.url})`,
+                description: `This song is trash but okay... Queued **${searchResult.tracks.length}** tracks from [${searchResult.tracks[0].playlist.title}](${searchResult.tracks[0].playlist.url})`,
                 color: 0x44b868
             }], failIfNotExists: false };
             queue.addTracks(searchResult.tracks);
         } else {
             reply = { embeds: [{
-                description: `Queued **[${searchResult.tracks[0].title}](${searchResult.tracks[0].url})**`,
+                description: `This song is trash but okay... Queued **[${searchResult.tracks[0].title}](${searchResult.tracks[0].url})**`,
                 color: 0x44b868
             }], failIfNotExists: false };
             queue.addTrack(searchResult.tracks[0]);

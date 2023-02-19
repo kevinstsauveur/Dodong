@@ -4,6 +4,7 @@
   "bugs": "https://github.com/nizewn/Dodong/issues",
   "license": "MIT",
   "description": "A music bot written using discord.js and discord-player",
+  "version": "1.0.4",
   "main": "index.js",
   "keywords": [
     "discord",
