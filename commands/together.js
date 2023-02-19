@@ -1,18 +1,18 @@
 const Command = require("../structures/command.js");
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { ActionRowBuilder, SelectMenuBuilder } = require('discord.js');
 
 module.exports = new Command({
 	name: "together",
 	aliases: ['t', 'party', 'partygames'],
 	description: "Discord Together!",
-	permission: "SEND_MESSAGES",
+	permission: "SendMessages",
 	async run(message, args, client, slash) {
         if(!message.member.voice.channel)
 			return message.reply({ embeds: [{ description: `You must be in a voice channel.`, color: 0xb84e44 }], ephemeral: true });
 
-		const row = new MessageActionRow()
+		const row = new ActionRowBuilder()
 		.addComponents(
-			new MessageSelectMenu()
+			new SelectMenuBuilder()
 				.setCustomId('together')
 				.setPlaceholder('Choose an activity')
 				.setMinValues(1)
@@ -27,20 +27,8 @@ module.exports = new Command({
 						value: '755827207812677713'
 					},
 					{
-						label: 'Betrayal.io',
-						value: '773336526917861400'
-					},
-					{
-						label: 'Fishington.io',
-						value: '814288819477020702'
-					},
-					{
 						label: 'Chess In The Park',
 						value: '832012774040141894'
-					},
-					{
-						label: 'Doodle Crew',
-						value: '878067389634314250'
 					},
 					{
 						label: 'Sketch Heads',
@@ -77,6 +65,14 @@ module.exports = new Command({
 					{
 						label: 'Bobble League',
 						value: '947957217959759964'
+					},
+					{
+						label: 'Ask Away',
+						value: '976052223358406656'
+					},
+					{
+						label: 'Know What I Meme',
+						value: '950505761862189096'
 					}
 				]),
 		);

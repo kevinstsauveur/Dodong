@@ -1,23 +1,24 @@
-const Discord = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const { Player } = require("discord-player");
 const config = require("../config.js");
 const fs = require("fs");
 const { Lyrics } = require("@discord-player/extractor");
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { Routes } = require('discord-api-types/v10');
 const extractor = require("../utils/extractor.js");
 const playdl = require("play-dl");
 
 
-class Client extends Discord.Client {
+class Bot extends Client {
 	constructor() {
 		super({
 			intents: [
-				Discord.Intents.FLAGS.GUILDS,
-				Discord.Intents.FLAGS.GUILD_MESSAGES,
-				Discord.Intents.FLAGS.GUILD_VOICE_STATES,
-                                Discord.Intents.FLAGS.GUILD_INVITES,
-                                Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+				GatewayIntentBits.Guilds,
+				GatewayIntentBits.GuildMessages,
+				GatewayIntentBits.GuildVoiceStates,
+                GatewayIntentBits.GuildInvites,
+                GatewayIntentBits.GuildMessageReactions,
+				GatewayIntentBits.MessageContent
 			]
 		});
 
@@ -25,23 +26,18 @@ class Client extends Discord.Client {
 		this.player = new Player(this);
 		this.player.use("dodong", extractor);
 		this.requiredVoicePermissions = [
-			"VIEW_CHANNEL",
-			"CONNECT",
-			"SPEAK"
+			"ViewChannel",
+			"Connect",
+			"Speak"
 		];
 		this.requiredTextPermissions = [
-			"VIEW_CHANNEL",
-			"SEND_MESSAGES",
-			"READ_MESSAGE_HISTORY",
-			"ADD_REACTIONS",
-			"EMBED_LINKS"
+			"ViewChannel",
+			"SendMessages",
+			"ReadMessageHistory",
+			"AddReactions",
+			"EmbedLinks"
 		];
 		this.prefix = process.env.PREFIX || config.prefix;
-
-		this.hasWebplayer = (process.env.WEBPLAYER || config.webplayer).startsWith("http");
-		if(this.hasWebplayer) {
-			this.io = require("socket.io")(process.env.PORT || 3000, { cors: { origin: "*", methods: ["GET", "POST"] }});
-		}
 	}
 
 	async init(token) {
@@ -78,7 +74,7 @@ class Client extends Discord.Client {
 				options: cmd.options,
 				defaultPermission: true
 			}));
-			const rest = new REST({ version: '9' }).setToken(token);
+			const rest = new REST({ version: '10' }).setToken(token);
 			await rest.put(Routes.applicationCommands(config.clientId), { body: slashCommands })
 				.then(() => console.log('Global slash commands registered successfully.'))
 				.catch(console.error);
@@ -112,22 +108,7 @@ class Client extends Discord.Client {
 			console.log("No Genius API token provided. Lyrics feature might not work properly.");
 
 		this.login(token);
-
-		if(this.hasWebplayer) {
-			// socket-io events
-			this.io.on('connection', socket => {
-				console.log(`Socket connection detected : ${socket.id}`);
-
-				// socket event handler
-				fs.readdirSync("./events/socket_events")
-					.filter(file => file.endsWith(".js"))
-					.forEach(file => {
-						const event = require(`../events/socket_events/${file}`);
-						socket.on(event.event, event.run.bind(null, this, socket, this.io));
-					});
-			})
-		}
 	}
 }
 
-module.exports = Client;
+module.exports = Bot;

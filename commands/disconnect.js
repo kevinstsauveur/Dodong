@@ -4,11 +4,11 @@ module.exports = new Command({
 	name: "disconnect",
 	aliases: ['dc'],
 	description: "Disconnects from the music channel and clears the server queue",
-	permission: "SEND_MESSAGES",
+	permission: "SendMessages",
 	async run(message, args, client, slash) {
         const queue = client.player.getQueue(message.guild);
         if (queue) await queue.destroy(true);
-		message.guild.me.voice.disconnect();
-        slash ? message.reply({embeds: [{ description: ` Go fuck yourself ❤️..`, color: 0x44b868 }]}) : message.react('👋');
+		message.guild.members.me.voice.disconnect();
+        slash ? message.reply({embeds: [{ description: ` Go fuck yourself ❤️.`, color: 0x44b868 }]}) : message.react('👋');
 	}
 });

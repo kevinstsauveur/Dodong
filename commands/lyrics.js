@@ -4,7 +4,7 @@ module.exports = new Command({
 	name: "lyrics",
 	aliases: ['l'],
 	description: "Displays the lyrics of the current or specified song",
-	permission: "SEND_MESSAGES",
+	permission: "SendMessages",
     options: [
         { description: 'Name of the song to search for lyrics', name: 'name', type: 3 }
     ],
@@ -17,7 +17,7 @@ module.exports = new Command({
 
             const result = await client.lyrics.search(query);
             if(!result) {
-                message.reply({ embeds: [{ description: !args ? "No lyrics found for `"+query+"`.\nTry manually searching using `"+client.prefix+"lyrics <songtitle>`" : "No lyrics found for `"+query+"`. Try being more specific with your query!", color: 0xb84e44}], ephemeral: true });
+                message.reply({ embeds: [{ description: args.length === 0 ? "No lyrics found for `"+query+"`.\nTry manually searching using `"+client.prefix+"lyrics <songtitle>`" : "No lyrics found for `"+query+"`. Try being more specific with your query!", color: 0xb84e44}], ephemeral: true });
             }
             else {
                 let trimmedLyrics = result.lyrics.length > 4095 ? result.lyrics.substring(0, 4092) + "..." : result.lyrics;

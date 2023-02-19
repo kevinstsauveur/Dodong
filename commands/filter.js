@@ -1,12 +1,12 @@
 const Command = require("../structures/command.js");
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { prefix } = require("../config.js");
 
 
 module.exports = new Command({
   name: "filter",
   description: "View and set audio filters",
-  permission: "SEND_MESSAGES",
+  permission: "SendMessages",
   options: [
     { description: 'Name of the audio filter', name: 'name', type: 3 }
   ],
@@ -15,31 +15,22 @@ module.exports = new Command({
 
     if(!message.member.voice.channelId)
         return message.reply({ embeds: [{ description: `You are not in a voice channel, you dumb!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
-    if(message.guild.me.voice.channelId && message.member.voice.channelId !== message.guild.me.voice.channelId)
+    if(message.guild.members.me.voice.channelId && message.member.voice.channelId !== message.guild.members.me.voice.channelId)
         return message.reply({ embeds: [{ description: `You are not in my voice channel, you dumb!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
     const queue = client.player.getQueue(message.guild);
-    const embed = new MessageEmbed();
+    const embed = new EmbedBuilder();
     if(!queue || !queue.playing)
         return message.reply({embeds: [{ description: `Nothing is currently playing in this server.`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
     if(!args || !args.length) {
         return display_status(queue, embed, message);
     }
-    const options = slash ? args[0].split(" ") : args;
-
+    args = slash ? args[0].split(" ") : args;
     embed.setColor('#44b868');
-    let filterType = [options[0]];
-
-    if(args.length > 2){
-      filterType = [];
-      for(let i in args){
-        filterType.push(options[i]);
-      }
-    }
 
     // filter is the container for valid filters
     let enabledFilters, disabledFilters, filter = {};
 
-    switch(filterType[0]){
+    switch(args[0]){
       case "list":
       case "help":
         return display_help(queue, embed, message);
@@ -54,11 +45,11 @@ module.exports = new Command({
 
     let count = 0, isTypo = false;
     let typofilters = "";
-    for(let i of filterType){
+    for(let i of args){
       // If typo or filter is not found or filter is already enabled
       if(!disabledFilters.includes(i)){
         isTypo = true;
-        filterType[count] = "";
+        args[count] = "";
         count++;
         typofilters = typofilters.concat(i+", ");
         continue;
@@ -80,8 +71,8 @@ module.exports = new Command({
     if(enabledFilters.length > 0){
       reply = reply.concat(`Removing Filters: **${enabledFilters.join(", ")}**\n\n`);
     }
-    filterType = filterType.filter(s => s !== "");
-    embed.setDescription(`${reply}Adding Filters: **${filterType.join(", ")}**`);
+    args = args.filter(s => s !== "");
+    embed.setDescription(`${reply}Adding Filters: **${args.join(", ")}**`);
     message.reply({ embeds: [embed], failIfNotExists: false });
     queue.setFilters(filter);
     return;
@@ -90,8 +81,10 @@ module.exports = new Command({
 
 const display_help = (queue, embed, message) => {
   embed.setDescription(`**Available Parameters:** off, status, help`);
-  embed.addField('Filters:', 'bassboost_low\nvibrato\nbassboost\nreverse\nbassboost_high\ntreble\n8D\nnormalizer\nvaporwave\nnormalizer2\nnightcore\nsurrounding\nphaser\npulsator\ntremolo\nsubboost', true);
-  embed.addField('\u200B', 'kakaoke\nexpander\nflanger\nsoftlimiter\nhaas\nchorus\nmcompand\nchorus2d\nmono\nchorus3d\nmstlr\nfadein\nmstrr\ndim\ncompressor\nearrape', true);
+  embed.addFields([
+    { name: 'Filters:', value: 'bassboost_low\nvibrato\nbassboost\nreverse\nbassboost_high\ntreble\n8D\nnormalizer\nvaporwave\nnormalizer2\nnightcore\nsurrounding\nphaser\npulsator\ntremolo\nsubboost' },
+    { name: '\u200B', value: 'karaoke\nexpander\nflanger\nsoftlimiter\nhaas\nchorus\nmcompand\nchorus2d\nmono\nchorus3d\nmstlr\nfadein\nmstrr\ndim\ncompressor\nearrape' }
+  ]);
   message.reply({ embeds: [embed], failIfNotExists: false });
   return;
 }

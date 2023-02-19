@@ -4,18 +4,18 @@ module.exports = new Command({
 	name: "play",
     aliases: ['p'],
 	description: "Plays the song specified",
-	permission: "SEND_MESSAGES",
+	permission: "SendMessages",
     options: [
         { description: 'URL or song name', name: 'song', required: true, type: 3 }
     ],
 	async run(message, args, client, slash) {
         if(!message.member.voice.channelId)
             return message.reply({ embeds: [{ description: `You are not in a voice channel, you dumb!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
-        if(message.guild.me.voice.channelId && message.member.voice.channelId !== message.guild.me.voice.channelId)
+        if(message.guild.members.me.voice.channelId && message.member.voice.channelId !== message.guild.members.me.voice.channelId)
             return message.reply({ embeds: [{ description: `You are not in my voice channel, you dumb!`, color: 0xb84e44 }], ephemeral: true, failIfNotExists: false });
         if(!args[0]) return;
         
-        if(!message.guild.me.permissionsIn(message.member.voice.channel).has(client.requiredVoicePermissions)) return;
+        if(!message.guild.members.me.permissionsIn(message.member.voice.channel).has(client.requiredVoicePermissions)) return;
 
         if(slash) await message.deferReply();
         let query = args.join(" "), reply = {};

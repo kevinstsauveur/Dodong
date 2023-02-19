@@ -1,11 +1,11 @@
 const Command = require("../structures/command.js");
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const generatePages = require('../utils/embedPages.js');
 module.exports = new Command({
 	name: "help",
 	aliases: [],
 	description: "Displays all server commands",
-	permission: "SEND_MESSAGES",
+	permission: "SendMessages",
 	async run(message, args, client, slash) {
 		const pages = [];
         let page = 1, emptypage = false, commandInfo;
@@ -23,7 +23,7 @@ module.exports = new Command({
 				return commandInfo;
 			});
             if(commands.length) {
-				const embed = new MessageEmbed();
+				const embed = new EmbedBuilder();
 				embed.setAuthor({ name: `Commands` });
                 embed.setDescription(`${commands.join('\n')}`);
                 embed.setColor(page%2 ? '#44b868' : '#b84e44');
