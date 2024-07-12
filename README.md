@@ -1,3 +1,5 @@
+> Note: This project is no longer actively maintained.
+
 <div align="center">
   <p>
     <img src="https://i.imgur.com/un792U4.png" width="500" alt="Dodong" /></a>
@@ -17,10 +19,9 @@ A music bot written using [discord.js](https://github.com/discordjs/discord.js) 
 - support for both slash & legacy commands
 - audio filters
 - lyrics search
-- web-based player controls ([coming soon](https://github.com/JoshCunningHum/Dodong-webplayer))
 - ... and more! ([see all commands](https://github.com/nizewn/Dodong/tree/main/commands))
 
-![Screenshot of the bot in action](https://puersa.com/gallery/dodongexample.png)
+![Screenshot of the bot in action](https://i.imgur.com/SfDflUk.png)
 
 ## Contribute
 
